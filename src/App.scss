@@ -47,7 +47,8 @@
     color: $color-danger;
   }
 
-  &__loading {
+  &__loading,
+  &__logged-in {
     color: $color-light;
   }
 }

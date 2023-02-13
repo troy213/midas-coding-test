@@ -12,11 +12,12 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [passwordIsValid, setPasswordIsValid] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const handleSetEmail = (e) => {
     const value = e.target.value
 
-    const isValid = REGEX.email.test(value) && email.length
+    const isValid = REGEX.email.test(value) && value.length > 0
     setEmailIsValid(isValid)
     setEmail(value)
   }
@@ -24,7 +25,7 @@ const App = () => {
   const handleSetPassword = (e) => {
     const value = e.target.value
 
-    const isValid = REGEX.password.test(value) && password.length
+    const isValid = REGEX.password.test(value) && value.length > 0
     setPasswordIsValid(isValid)
     setPassword(value)
   }
@@ -33,9 +34,7 @@ const App = () => {
     e.preventDefault()
     setIsLoading(true)
 
-    const isValid = REGEX.email.test(email) && REGEX.password.test(password)
-
-    if (!isValid) {
+    if (!emailIsValid || !passwordIsValid) {
       setIsLoading(false)
       return toast.error('Email or Password is not valid')
     }
@@ -49,6 +48,7 @@ const App = () => {
       if (response?.status >= 200 && response?.status <= 299) {
         setIsLoading(false)
         toast.success(`Logged in, your token is ${response.data?.token}`)
+        setIsLoggedIn(true)
       }
     } catch (error) {
       setIsLoading(false)
@@ -60,6 +60,13 @@ const App = () => {
     return (
       <div className='login'>
         <p className='login__loading'>Loading...</p>
+      </div>
+    )
+
+  if (isLoggedIn)
+    return (
+      <div className='login'>
+        <p className='login__logged-in'>Welcome!</p>
       </div>
     )
 
