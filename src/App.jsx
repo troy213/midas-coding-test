@@ -8,15 +8,25 @@ const LOGIN_URL = '/login'
 
 const App = () => {
   const [email, setEmail] = useState('')
+  const [emailIsValid, setEmailIsValid] = useState(true)
   const [password, setPassword] = useState('')
+  const [passwordIsValid, setPasswordIsValid] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSetEmail = (e) => {
-    setEmail(e.target.value)
+    const value = e.target.value
+
+    const isValid = REGEX.email.test(value) && email.length
+    setEmailIsValid(isValid)
+    setEmail(value)
   }
 
   const handleSetPassword = (e) => {
-    setPassword(e.target.value)
+    const value = e.target.value
+
+    const isValid = REGEX.password.test(value) && password.length
+    setPasswordIsValid(isValid)
+    setPassword(value)
   }
 
   const handleSubmit = async (e) => {
@@ -64,7 +74,11 @@ const App = () => {
             value={email}
             onChange={handleSetEmail}
             placeholder='john@mail.com'
+            className={`${!emailIsValid ? 'error' : ''}`}
           />
+          {!emailIsValid && (
+            <p className='login__input-helper'>Email format is not valid</p>
+          )}
         </div>
         <div className='login__input-wrapper'>
           <label htmlFor='password'>Password</label>
@@ -73,7 +87,11 @@ const App = () => {
             value={password}
             onChange={handleSetPassword}
             placeholder='password'
+            className={`${!passwordIsValid ? 'error' : ''}`}
           />
+          {!passwordIsValid && (
+            <p className='login__input-helper'>Password format is not valid</p>
+          )}
         </div>
         <button type='submit' className='btn btn-primary'>
           Login
